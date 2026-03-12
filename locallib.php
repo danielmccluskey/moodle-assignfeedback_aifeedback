@@ -62,22 +62,24 @@ class assign_feedback_aifeedback extends assign_feedback_plugin {
         $outputid = 'assignfeedback_aifeedback_output_' . $userid;
         $reviewdetailsid = 'assignfeedback_aifeedback_reviewdetails_' . $userid;
 
-        $button = html_writer::tag('button',
+        $button = html_writer::tag(
+            'button',
             get_string('generatebutton', 'assignfeedback_aifeedback'),
-            array(
+            [
                 'type' => 'button',
                 'id' => $buttonid,
                 'class' => 'btn btn-sm btn-secondary',
-            )
+            ]
         );
 
-        $refreshbutton = html_writer::tag('button',
+        $refreshbutton = html_writer::tag(
+            'button',
             get_string('refreshbutton', 'assignfeedback_aifeedback'),
-            array(
+            [
                 'type' => 'button',
                 'id' => $refreshid,
                 'class' => 'btn btn-sm btn-outline-secondary ms-1',
-            )
+            ]
         );
 
         $actions = html_writer::div(
@@ -88,28 +90,28 @@ class assign_feedback_aifeedback extends assign_feedback_plugin {
         $status = html_writer::div(
             get_string('statusplaceholder', 'assignfeedback_aifeedback'),
             'alert alert-info mt-2 mb-1 py-2',
-            array(
+            [
                 'id' => $statusid,
                 'role' => 'status',
                 'aria-live' => 'polite',
-            )
+            ]
         );
 
         $refreshinfo = html_writer::div(
             get_string('refreshactivityidle', 'assignfeedback_aifeedback'),
             'text-muted small mb-0',
-            array(
+            [
                 'id' => $refreshinfoid,
                 'aria-live' => 'polite',
-            )
+            ]
         );
 
         $reviewsummary = html_writer::tag(
             'summary',
             get_string('reviewoutputlabel', 'assignfeedback_aifeedback'),
-            array(
+            [
                 'class' => 'small font-weight-bold mt-1',
-            )
+            ]
         );
 
         $reviewnote = html_writer::div(
@@ -117,24 +119,26 @@ class assign_feedback_aifeedback extends assign_feedback_plugin {
             'small text-muted mt-1 mb-2'
         );
 
-        $reviewtextarea = html_writer::tag('textarea', '',
-            array(
+        $reviewtextarea = html_writer::tag(
+            'textarea',
+            '',
+            [
                 'id' => $outputid,
                 'class' => 'form-control',
                 'rows' => 8,
                 'readonly' => 'readonly',
                 'placeholder' => get_string('reviewplaceholder', 'assignfeedback_aifeedback'),
-            )
+            ]
         );
 
         $reviewdetails = html_writer::tag(
             'details',
             $reviewsummary . $reviewnote . $reviewtextarea,
-            array(
+            [
                 'id' => $reviewdetailsid,
                 'class' => 'assignfeedback-aifeedback-review mt-2',
                 'open' => 'open',
-            )
+            ]
         );
 
         $content = html_writer::div(
