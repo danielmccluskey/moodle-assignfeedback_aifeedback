@@ -33,12 +33,12 @@ use core_ai\manager;
  * Sends prepared submission payloads to Moodle AI.
  */
 class request_ai_generator {
-    /** @var int Max assignment description characters included in prompt. */
-    private const MAX_ASSIGNMENT_DESC_CHARS = 4000;
-    /** @var int Max submission characters included in prompt. */
-    private const MAX_SUBMISSION_CHARS = 20000;
-    /** @var int Max issue details characters included in prompt. */
-    private const MAX_ISSUE_CHARS = 1500;
+    /** @var int Default max assignment description characters included in prompt. */
+    private const DEFAULT_MAX_ASSIGNMENT_DESC_CHARS = 4000;
+    /** @var int Default max submission characters included in prompt. */
+    private const DEFAULT_MAX_SUBMISSION_CHARS = 20000;
+    /** @var int Default max issue details characters included in prompt. */
+    private const DEFAULT_MAX_ISSUE_CHARS = 1500;
 
     /**
      * Generate AI guidance for a queued request.
@@ -174,10 +174,18 @@ class request_ai_generator {
      * @return string
      */
     private static function build_prompt(array $payload, array $issues): string {
+        $assignmentdesclimit = self::get_prompt_char_limit(
+            'maxassignmentdescchars',
+            self::DEFAULT_MAX_ASSIGNMENT_DESC_CHARS
+        );
+        $submissionlimit = self::get_prompt_char_limit(
+            'maxsubmissionchars',
+            self::DEFAULT_MAX_SUBMISSION_CHARS
+        );
         $assignmentname = (string)($payload['assignment']['name'] ?? '');
         $assignmentdescription = self::truncate_text(
             (string)($payload['assignment']['description'] ?? ''),
-            self::MAX_ASSIGNMENT_DESC_CHARS
+            $assignmentdesclimit
         );
         $gradingscheme = is_array($payload['assignment']['gradingscheme'] ?? null)
             ? $payload['assignment']['gradingscheme']
@@ -187,7 +195,7 @@ class request_ai_generator {
         $gradesuggestioninstruction = self::build_grade_suggestion_instruction($gradingscheme);
         $submissiontext = self::truncate_text(
             (string)($payload['submission']['combinedtext'] ?? ''),
-            self::MAX_SUBMISSION_CHARS
+            $submissionlimit
         );
         $issuesummary = self::summarise_issues($issues);
 
@@ -327,7 +335,33 @@ class request_ai_generator {
             $lines[] = $code . ': ' . $message;
         }
 
-        return self::truncate_text(implode("\n", $lines), self::MAX_ISSUE_CHARS);
+        $issuelimit = self::get_prompt_char_limit(
+            'maxissuechars',
+            self::DEFAULT_MAX_ISSUE_CHARS
+        );
+
+        return self::truncate_text(implode("\n", $lines), $issuelimit);
+    }
+
+    /**
+     * Get a configured prompt section character limit.
+     *
+     * @param string $configname Plugin config key.
+     * @param int $default Default value when config is missing or invalid.
+     * @return int
+     */
+    private static function get_prompt_char_limit(string $configname, int $default): int {
+        $value = \get_config('assignfeedback_aifeedback', $configname);
+        if (!is_numeric($value)) {
+            return $default;
+        }
+
+        $limit = (int)$value;
+        if ($limit < 1) {
+            return $default;
+        }
+
+        return $limit;
     }
 
     /**

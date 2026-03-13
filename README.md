@@ -77,7 +77,6 @@ https://cheltenhaminteractive.com
 ## TODO
 
 - Add an admin setting to force this plugin to use a specific Moodle AI provider instead of the first available provider.
-- Move prompt character limits into admin settings.
 - Add usage limits per course, per day, per submission record, and per user.
 - Add a feature to restrict plugin availability to selected courses and/or course categories.
 - Add a cleanup/retention task so AI feedback results are kept only for a configurable period (for example, X days/months).

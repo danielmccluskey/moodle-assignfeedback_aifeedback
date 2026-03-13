@@ -38,6 +38,30 @@ $settings->add(new admin_setting_configcheckbox(
     0
 ));
 
+$settings->add(new admin_setting_configtext(
+    'assignfeedback_aifeedback/maxassignmentdescchars',
+    new lang_string('maxassignmentdescchars', 'assignfeedback_aifeedback'),
+    new lang_string('maxassignmentdescchars_help', 'assignfeedback_aifeedback'),
+    4000,
+    PARAM_INT
+));
+
+$settings->add(new admin_setting_configtext(
+    'assignfeedback_aifeedback/maxsubmissionchars',
+    new lang_string('maxsubmissionchars', 'assignfeedback_aifeedback'),
+    new lang_string('maxsubmissionchars_help', 'assignfeedback_aifeedback'),
+    20000,
+    PARAM_INT
+));
+
+$settings->add(new admin_setting_configtext(
+    'assignfeedback_aifeedback/maxissuechars',
+    new lang_string('maxissuechars', 'assignfeedback_aifeedback'),
+    new lang_string('maxissuechars_help', 'assignfeedback_aifeedback'),
+    1500,
+    PARAM_INT
+));
+
 $supporturl = new moodle_url('https://cheltenhaminteractive.com');
 $supportlink = html_writer::link($supporturl, "Cheltenham Interactive LTD", [
     'target' => '_blank',
