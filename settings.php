@@ -38,6 +38,12 @@ $settings->add(new admin_setting_configcheckbox(
     0
 ));
 
+$settings->add(new admin_setting_heading(
+    'assignfeedback_aifeedback_limits',
+    new lang_string('limitsheading', 'assignfeedback_aifeedback'),
+    new lang_string('limitsdescription', 'assignfeedback_aifeedback')
+));
+
 $settings->add(new admin_setting_configtext(
     'assignfeedback_aifeedback/maxassignmentdescchars',
     new lang_string('maxassignmentdescchars', 'assignfeedback_aifeedback'),

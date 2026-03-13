@@ -357,7 +357,7 @@ class request_ai_generator {
         }
 
         $limit = (int)$value;
-        if ($limit < 1) {
+        if ($limit < 0) {
             return $default;
         }
 
@@ -368,11 +368,15 @@ class request_ai_generator {
      * Truncate long prompt sections to a maximum size.
      *
      * @param string $text Input text.
-     * @param int $maxchars Maximum allowed length.
+     * @param int $maxchars Maximum allowed length. Use 0 for no limit.
      * @return string
      */
     private static function truncate_text(string $text, int $maxchars): string {
         $trimmed = trim($text);
+        if ($maxchars === 0) {
+            return $trimmed;
+        }
+
         if (\core_text::strlen($trimmed) <= $maxchars) {
             return $trimmed;
         }
